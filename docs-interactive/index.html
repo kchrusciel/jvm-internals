@@ -25,18 +25,6 @@
           <h1 style="font-weight: bold; color: #a30000">JVM</h1>
           <h3>Internals</h3>
         </section>
-        <section style="font-family: monospace">
-          <ul style="list-style:none;">
-            <li>0: bipush 30</li>
-            <li>2: istore_1</li>
-            <li>3: bipush 120</li>
-            <li>5: istore_2</li>
-            <li>6: iload_1</li>
-            <li>7: iload_2</li>
-            <li>8: iadd</li>
-            <li>9: ireturn</li>
-          </ul>
-        </section>
         <section>
           <p>Add.
             <span style="font-weight: bold; color: #a30000">java</span>
@@ -94,19 +82,29 @@
               <h3>Java SE 8 = 52 (0x34 hex)</h3>
           </section>
           <section>
-              <h1><span style="font-weight: bold; color: #a30000">C</span>onstant</h1>
-              <pre style="box-shadow:none;">
-Constant pool:
-#1 = Integer     10
-#1 = Methodref #6.#15 // java/lang/Object."&lt;init>":()V
-#2 = Fieldref #16.#17 // java/lang/System.out:Ljava/io/PrintStream;
-#3 = String #18 // Hello World!
-#4 = Methodref #19.#20 
-        // java/io/PrintStream.println:(Ljava/lang/String;)V
-#5 = Class #21 // Main
-#6 = Class #22 // java/lang/Object
-#7 = Utf8 &lt;init>
-                  </pre>
+              <section>
+                  <h1><span style="font-weight: bold; color: #a30000">C</span>onstant</h1>
+                  <pre style="box-shadow:none;">
+    Constant pool:
+    #1 = Integer     10
+    #1 = Methodref #6.#15 // java/lang/Object."&lt;init>":()V
+    #2 = Fieldref #16.#17 // java/lang/System.out:Ljava/io/PrintStream;
+    #3 = String #18 // Hello World!
+    #4 = Methodref #19.#20 
+            // java/io/PrintStream.println:(Ljava/lang/String;)V
+    #5 = Class #21 // Main
+    #6 = Class #22 // java/lang/Object
+    #7 = Utf8 &lt;init>
+                      </pre>
+              </section>
+              <section>
+                <ul>
+                    <li>Integer/Float - a 4 byte constant</li>
+                    <li>Long/Double - a 8 byte constant</li>
+                    <li>String - pointer to UTF8</li>
+                    <li>Utf8 - sequence of characters</li>
+                </ul>
+              </section>
           </section>
           <section>
               <h1><span style="font-weight: bold; color: #a30000">A</span>cess flags</h1>
@@ -160,8 +158,70 @@ Constant pool:
               $$ u2 = 2 bajts = 2^{16} = 65536 $$
           </section>
           <section>
+            <h1>Let's run <span style="font-weight: bold; color: #a30000">IT</span>!</h1>
+            <h3 class="fragment" data-fragment-index="0">ClassLoader</h3>
+            <h3 class="fragment" data-fragment-index="1">Thread</h3>
+          </section>
+          <section>
               <h1><span style="font-weight: bold; color: #a30000">Class</span>loader</h1>
           </section>
+          <section data-background-image="img/class_loader_hierarchy.png" data-background-size="contain">
+          </section>
+          <section>
+            <ul style="list-style-type: none;">
+            <li>log(String.class.getClassLoader());</li>
+            <li>log(Shell.class.getClassLoader());</li>
+            <li>log(MyClass.class.getClassLoader());</li>
+            <li>------------------------------------</li>
+            <li><span style="font-weight: bold; color: #a30000">null</span></li>
+            <li>sun.misc.Launcher$<span style="font-weight: bold; color: #a30000">ExtClassLoader</span>@6d5380c2</li>
+            <li>sun.misc.Launcher$<span style="font-weight: bold; color: #a30000">AppClassLoader</span>@18b4aac2</li>
+            </ul>
+          </section>
+          <section data-background-image="img/class_loader_phases.png" data-background-size="contain">
+          </section>
+          <section>
+              <h1><span style="font-weight: bold; color: #a30000">T</span>hread</h1>
+          </section>
+          <section>
+            <h1>mapping</h1>
+            <h1>initializating</h1>
+            <h1>run()</h1>
+            <h1>non-<span style="font-weight: bold; color: #a30000">deamon</span></h1>
+          </section>
+          <section>
+            <h1><span style="font-weight: bold; color: #a30000">Stack</span> based</h1>
+          </section>
+          <section data-background-image="img/thread.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/program_counter.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/stack.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/stack_frame.png" data-background-size="contain">
+          </section>
+          <section>
+            <p>Stos przyklad dzialania</p>
+          </section>
+          <section>
+            <h1><span style="font-weight: bold; color: #a30000">Stack</span>OverflowError</h1>
+            <h1>OutOf<span style="font-weight: bold; color: #a30000">Memory</span>Error</h1>
+          </section>
+          <section>
+            <p>ramka</p>
+          </section>
+          <section style="font-family: monospace">
+          <ul style="list-style:none;">
+            <li>0: bipush 30</li>
+            <li>2: istore_1</li>
+            <li>3: bipush 120</li>
+            <li>5: istore_2</li>
+            <li>6: iload_1</li>
+            <li>7: iload_2</li>
+            <li>8: iadd</li>
+            <li>9: ireturn</li>
+          </ul>
+        </section>
       </div>
     </div>
 
