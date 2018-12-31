@@ -74,6 +74,14 @@
           <section>
             <h1><span style="font-weight: bold; color: #a30000">M</span>agic number</h1>
             <h3>OxCAFEBABE</h3>
+            <aside class="notes">
+                James Gosling: Lunch at a place called St Michael’s Alley.  The Grateful Dead plays there.
+                When we used to go there, we referred to the place as Cafe Dead.  
+                Somewhere along the line, it was noticed that this was a HEX number. 
+                I was re-vamping some file format code and needed a couple of magic numbers: one for the persistent object file, and one for classes. 
+                I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after “CAFE” (it seemed to be a good theme)
+                I hit on BABE and decided to use it.
+              </aside>
           </section>
           <section>
               <h1><span style="font-weight: bold; color: #a30000">V</span>ersion</h1>
@@ -83,19 +91,7 @@
           </section>
           <section>
               <section>
-                  <h1><span style="font-weight: bold; color: #a30000">C</span>onstant</h1>
-                  <pre style="box-shadow:none;">
-    Constant pool:
-    #1 = Integer     10
-    #1 = Methodref #6.#15 // java/lang/Object."&lt;init>":()V
-    #2 = Fieldref #16.#17 // java/lang/System.out:Ljava/io/PrintStream;
-    #3 = String #18 // Hello World!
-    #4 = Methodref #19.#20 
-            // java/io/PrintStream.println:(Ljava/lang/String;)V
-    #5 = Class #21 // Main
-    #6 = Class #22 // java/lang/Object
-    #7 = Utf8 &lt;init>
-                      </pre>
+                  <h1><span style="font-weight: bold; color: #a30000">C</span>onstant Pool</h1>
               </section>
               <section>
                 <ul>
@@ -103,7 +99,12 @@
                     <li>Long/Double - a 8 byte constant</li>
                     <li>String - pointer to UTF8</li>
                     <li>Utf8 - sequence of characters</li>
+                    <li>Class - pointer to UTF8 with full class name</li>
+                    <li>NameAndType - full name with type</li>
+                    <li>Field/Method/InterfaceMethod/ref - references</li>
                 </ul>
+              </section>
+              <section data-background-image="img/constant_pool.png" data-background-size="contain">
               </section>
           </section>
           <section>
@@ -126,10 +127,24 @@
               $$ u2 = 2 bajts = 2^{16} = 65536 $$
           </section>
           <section>
-              <h1><span style="font-weight: bold; color: #a30000">F</span>ields</h1>
-              <h3>fields_count - number of fields</h3>
-              <h3>fields[fields_count] - <span style="font-weight: bold; color: #a30000">field_info</span></h3>
-              $$ u2 = 2 bajts = 2^{16} = 65536 $$
+              <section>
+                  <h1><span style="font-weight: bold; color: #a30000">F</span>ields</h1>
+                  <h3>fields_count - number of fields</h3>
+                  <h3>fields[fields_count] - <span style="font-weight: bold; color: #a30000">field_info</span></h3>
+                  $$ u2 = 2 bajts = 2^{16} = 65536 $$
+              </section>
+            <section>
+              <h1><span style="font-weight: bold; color: #a30000">f</span>ield_info</h1>
+              <pre style="box-shadow:none;">
+          field_info {
+              u2             access_flags;
+              u2             name_index;
+              u2             descriptor_index;
+              u2             attributes_count;
+              attribute_info attributes[attributes_count];
+          }
+              </pre>
+          </section>
           </section>
           <section>
             <section>
@@ -141,13 +156,13 @@
             <section>
                 <h1><span style="font-weight: bold; color: #a30000">m</span>ethod_info</h1>
                 <pre style="box-shadow:none;">
-              method_info {
-                  u2             access_flags;
-                  u2             name_index;
-                  u2             descriptor_index;
-                  u2             attributes_count;
-                  attribute_info attributes[attributes_count];
-              }
+            method_info {
+                u2             access_flags;
+                u2             name_index;
+                u2             descriptor_index;
+                u2             attributes_count;
+                attribute_info attributes[attributes_count];
+            }
                 </pre>
             </section>
           </section>
@@ -157,10 +172,13 @@
               <h3>attributes[attributes_count]</h3>
               $$ u2 = 2 bajts = 2^{16} = 65536 $$
           </section>
+          <section data-state="terminal-example">
+              <div data-is-terminal data-cwd="subdir"></div>
+            </section>
           <section>
             <h1>Let's run <span style="font-weight: bold; color: #a30000">IT</span>!</h1>
-            <h3 class="fragment" data-fragment-index="0">ClassLoader</h3>
-            <h3 class="fragment" data-fragment-index="1">Thread</h3>
+            <h3 class="fragment" data-fragment-index="0"><span style="font-weight: bold; color: #a30000">Class</span>Loader</h3>
+            <h3 class="fragment" data-fragment-index="1"><span style="font-weight: bold; color: #a30000">T</span>hread</h3>
           </section>
           <section>
               <h1><span style="font-weight: bold; color: #a30000">Class</span>loader</h1>
@@ -171,7 +189,7 @@
             <ul style="list-style-type: none;">
             <li>log(String.class.getClassLoader());</li>
             <li>log(Shell.class.getClassLoader());</li>
-            <li>log(MyClass.class.getClassLoader());</li>
+            <li>log(Add.class.getClassLoader());</li>
             <li>------------------------------------</li>
             <li><span style="font-weight: bold; color: #a30000">null</span></li>
             <li>sun.misc.Launcher$<span style="font-weight: bold; color: #a30000">ExtClassLoader</span>@6d5380c2</li>
@@ -179,6 +197,13 @@
             </ul>
           </section>
           <section data-background-image="img/class_loader_phases.png" data-background-size="contain">
+            <aside class="notes">
+                Verifying...Performing these checks during the verifying stages means these checks do not need to be performed at runtime. 
+                Verification during linking slows down class loading however it avoids the need to perform these checks multiple when executing the bytecode.
+                Preparing...involves allocation of memory for static storage and any data structures used by the JVM such as method tables. 
+                Static fields are created and initialized to their default values
+                Resolving...is an optional stage which involves checking symbolic references by loading the referenced classes
+            </aside>
           </section>
           <section>
               <h1><span style="font-weight: bold; color: #a30000">T</span>hread</h1>
@@ -186,8 +211,7 @@
           <section>
             <h1>mapping</h1>
             <h1>initializating</h1>
-            <h1>run()</h1>
-            <h1>non-<span style="font-weight: bold; color: #a30000">deamon</span></h1>
+            <h1><span style="font-weight: bold; color: #a30000">run</span>()</h1>
           </section>
           <section>
             <h1><span style="font-weight: bold; color: #a30000">Stack</span> based</h1>
@@ -200,28 +224,118 @@
           </section>
           <section data-background-image="img/stack_frame.png" data-background-size="contain">
           </section>
-          <section>
-            <p>Stos przyklad dzialania</p>
+          <section data-background-image="img/empty_stack.png" data-background-size="contain">
           </section>
+          <section data-background-image="img/stack_first_arrow.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/stack_second_arrow.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/stack_third_arrow.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/stack_fourth_arrow.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/stack_fifth_arrow.png" data-background-size="contain">
+          </section>
+          <section>
+            <h1><span style="font-weight: bold; color: #a30000">F</span>rame</h1>
+          </section>
+          <section data-background-image="img/empty_frame.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_b_stack.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_b_frame.png" data-background-size="contain">
+          </section>
+          <section>
+            <h1><span style="font-weight: bold; color: #a30000">Byte</span>code</h1>
+            <h3 class="fragment" data-fragment-index="0">256</h3>
+            <h3 class="fragment" data-fragment-index="1">~200</h3>
+          </section>
+          <section data-background-image="img/method_b_bytecode.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_b_operand_stack.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_b_operand_stack_1.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_b_operand_stack_2.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_b_operand_stack_3.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_b_operand_stack_4.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_c_bytecode.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_c_operand_stack.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_c_operand_stack_1.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_c_operand_stack_2.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/method_c_operand_stack_3.png" data-background-size="contain">
+          </section>
+          <section data-background-image="img/jvm_bytecode_table.png" data-background-size="contain">
+          </section>
+          <section>
+              <ul>
+                  <li>Load and store (e.g. aload_0, istore)</li>
+                  <li>Arithmetic and logic (e.g. ladd, fcmpl)</li>
+                  <li>Type conversion (e.g. i2b, d2i)</li>
+                  <li>Object creation and manipulation (new, putfield)</li>
+                  <li>Operand stack management (e.g. swap, dup2)</li>
+                  <li>Control transfer (e.g. ifeq, goto)</li>
+                  <li>Method invocation and return (e.g. invokespecial, areturn)</li>
+              </ul>
+          </section>
+          <section>
+            <h1><span style="font-weight: bold; color: #a30000">m</span>ethod_info</h1>
+            <pre style="box-shadow:none;">
+        method_info {
+            u2             access_flags;
+            u2             name_index;
+            u2             descriptor_index;
+            u2             attributes_count;
+            attribute_info attributes[attributes_count];
+        }
+            </pre>
+        </section>
+        <section>
+          <h1><span style="font-weight: bold; color: #a30000">C</span>ode_attribute</h1>
+          <pre style="box-shadow:none;">
+          Code_attribute {
+              u2 attribute_name_index;
+              u4 attribute_length;
+              u2 max_stack;
+              u2 max_locals;
+              u4 code_length;
+              u1 code[code_length];
+              u2 exception_table_length;
+              {   u2 start_pc;
+                  u2 end_pc;
+                  u2 handler_pc;
+                  u2 catch_type;
+              } exception_table[exception_table_length];
+              u2 attributes_count;
+              attribute_info attributes[attributes_count];
+          }
+          </pre>
+      </section>
           <section>
             <h1><span style="font-weight: bold; color: #a30000">Stack</span>OverflowError</h1>
             <h1>OutOf<span style="font-weight: bold; color: #a30000">Memory</span>Error</h1>
+            <aside class="notes">
+                A stack can be a dynamic or fixed size. If a thread requires a larger stack than allowed a StackOverflowError is thrown.
+                If a thread requires a new frame and there isn’t enough memory to allocate it then an OutOfMemoryError is thrown.
+              </aside>
           </section>
           <section>
-            <p>ramka</p>
+            <h1>Non-<span style="font-weight: bold; color: #a30000">deamon?</span></h1>
           </section>
-          <section style="font-family: monospace">
-          <ul style="list-style:none;">
-            <li>0: bipush 30</li>
-            <li>2: istore_1</li>
-            <li>3: bipush 120</li>
-            <li>5: istore_2</li>
-            <li>6: iload_1</li>
-            <li>7: iload_2</li>
-            <li>8: iadd</li>
-            <li>9: ireturn</li>
-          </ul>
-        </section>
+          <section>
+            <h2>Thanks</h2>
+            <p>Krzysztof Chruściel</p>
+            <p><span style="font-weight: bold; color: #a30000">Code</span>Couple.pl</p>
+            <p>krzysztof.chrusciel@outlook.com</p>
+            <p>github.com/kchrusciel</p>
+          </section>
       </div>
     </div>
 
