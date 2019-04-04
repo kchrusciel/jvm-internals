@@ -26,7 +26,8 @@
           <h3>Internals</h3>
           <img style="border: none; box-shadow: none;" width="200px" class="aligncenter" src="img/hipek.svg">
         </section>
-        <section data-background-image="img/flames.svg" data-background-size="contain"></section>
+        <section data-background-image="img/hipek-run.svg" data-background-size="contain"></section>
+        <section data-background-image="img/hipek-run-php.svg" data-background-size="contain"></section>
         <section>
           <p>Add.
             <span style="font-weight: bold; color: #a30000">java</span>
@@ -188,17 +189,17 @@
           <section>
               <h1><span style="font-weight: bold; color: #a30000">Class</span>loader</h1>
           </section>
-          <section data-background-image="img/class_loader_hierarchy.png" data-background-size="contain">
+          <section data-background-image="img/class_loader_hierarchy.svg" data-background-size="contain">
           </section>
           <section>
             <ul style="list-style-type: none;">
             <li>log(String.class.getClassLoader());</li>
-            <li>log(Shell.class.getClassLoader());</li>
-            <li>log(Add.class.getClassLoader());</li>
+            <li>log(URLReader.class.getClassLoader());</li>
+            <li>log(Runner.class.getClassLoader());</li>
             <li>------------------------------------</li>
             <li><span style="font-weight: bold; color: #a30000">null</span></li>
-            <li>sun.misc.Launcher$<span style="font-weight: bold; color: #a30000">ExtClassLoader</span>@6d5380c2</li>
-            <li>sun.misc.Launcher$<span style="font-weight: bold; color: #a30000">AppClassLoader</span>@18b4aac2</li>
+            <li>jdk.internal.loader.ClassLoaders$<span style="font-weight: bold; color: #a30000">PlatformClassLoader</span></li>
+            <li>jdk.internal.loader.ClassLoaders$<span style="font-weight: bold; color: #a30000">AppClassLoader</span></li>
             </ul>
           </section>
           <section data-background-image="img/class_loader_phases.png" data-background-size="contain">
@@ -209,6 +210,34 @@
                 Static fields are created and initialized to their default values
                 Resolving...is an optional stage which involves checking symbolic references by loading the referenced classes
             </aside>
+          </section>
+        <section>
+            <h1><span style="font-weight: bold; color: #a30000">Loading</span></h1>
+            <h3>structure</h3>
+            <h3 class="fragment" data-fragment-index="0">version</h3>
+            <h3 class="fragment" data-fragment-index="1">java.lang.class</h3>
+          </section>
+          <section>
+            <h1><span style="font-weight: bold; color: #a30000">Verifying</span></h1>
+            <h3>bytecode</h3>
+            <h3 class="fragment" data-fragment-index="0">VerifyError</h3>
+            <h3 class="fragment" data-fragment-index="1">expensive</h3>
+          </section>
+        <section>
+            <h1><span style="font-weight: bold; color: #a30000">Preparing</span></h1>
+            <h3>Default for static</h3>
+            <h3 class="fragment" data-fragment-index="0">JVM structures</h3>
+          </section>
+          <section>
+            <h1><span style="font-weight: bold; color: #a30000">Resolving</span></h1>
+            <h3>constant pool</h3>
+            <h3 class="fragment" data-fragment-index="0">java/lang/Object</h3>
+            <h3 class="fragment" data-fragment-index="1">optional</h3>
+          </section>
+        <section>
+            <h1><span style="font-weight: bold; color: #a30000">Initializing</span></h1>
+            <h3>static blocks</h3>
+            <h3 class="fragment" data-fragment-index="0">Thread Safe</h3>
           </section>
           <section>
               <h1><span style="font-weight: bold; color: #a30000">T</span>hread</h1>
