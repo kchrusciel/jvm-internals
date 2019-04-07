@@ -217,11 +217,13 @@
             <h3 class="fragment" data-fragment-index="0">version</h3>
             <h3 class="fragment" data-fragment-index="1">java.lang.class</h3>
           </section>
+          <section data-background-image="img/off-heap.svg" data-background-size="contain"></section>
           <section>
             <h1><span style="font-weight: bold; color: #a30000">Verifying</span></h1>
             <h3>bytecode</h3>
             <h3 class="fragment" data-fragment-index="0">VerifyError</h3>
             <h3 class="fragment" data-fragment-index="1">expensive</h3>
+            <h3 class="fragment" data-fragment-index="2">-Xverify:none or -noverify</h3>
           </section>
         <section>
             <h1><span style="font-weight: bold; color: #a30000">Preparing</span></h1>
@@ -245,7 +247,7 @@
           <section>
             <h1>mapping</h1>
             <h1>initializing</h1>
-            <h1><span style="font-weight: bold; color: #a30000">run</span>()</h1>
+            <h1><span style="font-weight: bold; color: #a30000">start</span>()</h1>
           </section>
           <section>
             <h1><span style="font-weight: bold; color: #a30000">Stack</span> based</h1>
@@ -258,6 +260,7 @@
           </section>
           <section data-background-image="img/stack_frame.png" data-background-size="contain">
           </section>
+        <section data-background-image="img/off-heap.svg" data-background-size="contain"></section>
           <section data-background-image="img/empty_stack.png" data-background-size="contain">
           </section>
           <section data-background-image="img/stack_first_arrow.png" data-background-size="contain">
@@ -306,6 +309,18 @@
           </section>
           <section data-background-image="img/method_c_operand_stack_3.png" data-background-size="contain">
           </section>
+          <section>
+            <h1>100 + 100<span style="font-weight: bold; color: #a30000">L</span></h1>
+          </section>
+          <section>
+            <h1><span style="font-weight: bold; color: #a30000">Operand</span>stack</h1>
+            <h3 class="fragment" data-fragment-index="0">frame - 4 bytes</h3>
+            <h3 class="fragment" data-fragment-index="1">int - 4 bytes</h3>
+            <h3 class="fragment" data-fragment-index="2">long - 8 bytes</h3>
+            <h3 class="fragment" data-fragment-index="3">iadd - <span style="font-weight: bold; color: #a30000">2</span> frames</h3>
+            <h3 class="fragment" data-fragment-index="4">ladd - <span style="font-weight: bold; color: #a30000">4</span> frames</h3>
+          </section>
+          <section data-background-image="img/operand_stack_long_int.png" data-background-size="contain"></section>
           <section data-background-image="img/jvm_bytecode_table.png" data-background-size="contain">
           </section>
           <section>
